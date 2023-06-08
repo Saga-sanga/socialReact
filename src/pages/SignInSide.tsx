@@ -12,7 +12,11 @@ import Grid from "@mui/material/Grid";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { Link as RouterLink } from "react-router-dom";
+import { useNavigate, Link as RouterLink } from "react-router-dom";
+
+type StateProps = {
+  setUser: (a: any) => void
+}
 
 function Copyright(props: any) {
   return (
@@ -35,14 +39,33 @@ function Copyright(props: any) {
 // TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme();
 
-export default function SignInSide() {
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+export default function SignInSide({ setUser }: StateProps) {
+  const navigate = useNavigate();
+
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
+    const formData = new FormData(event.currentTarget);
+    const objFormData = Object.fromEntries(formData.entries());
+
+    const response = await fetch("http://localhost:3020/auth/login", {
+      method: "POST",
+      headers: {
+        "Content-type": "application/json",
+      },
+      body: JSON.stringify(objFormData),
     });
+
+    const data = await response.json();
+    console.log(data);
+
+    if (data.user) {
+      setUser(data.user);
+      navigate("/home");
+    }
+
+    if (data.error) {
+      console.log(data.error);
+    }
   };
 
   return (
@@ -108,10 +131,10 @@ export default function SignInSide() {
                 id="password"
                 autoComplete="current-password"
               />
-              <FormControlLabel
+              {/* <FormControlLabel
                 control={<Checkbox value="remember" color="primary" />}
                 label="Remember me"
-              />
+              /> */}
               <Button
                 type="submit"
                 fullWidth
