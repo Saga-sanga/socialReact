@@ -1,4 +1,4 @@
-import * as React from "react";
+import { useState } from "react";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -15,8 +15,8 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useNavigate, Link as RouterLink } from "react-router-dom";
 
 type StateProps = {
-  setUser: (a: any) => void
-}
+  setUser: (a: any) => void;
+};
 
 function Copyright(props: any) {
   return (
@@ -41,31 +41,63 @@ const defaultTheme = createTheme();
 
 export default function SignInSide({ setUser }: StateProps) {
   const navigate = useNavigate();
+  const [errorEmail, setErrorEmail] = useState(false);
+  const [emailErrorText, setEmailErrorText] = useState("");
+  const [errorPassword, setErrorPassword] = useState(false);
+  const [passwordErrorText, setPasswordErrorText] = useState("");
+
+  const handleEmailError = (status: boolean, message: string) => {
+    setErrorEmail(status);
+    setEmailErrorText(message);
+  };
+
+  const handlePasswordError = (status: boolean, message: string) => {
+    setErrorPassword(status);
+    setPasswordErrorText(message);
+  };
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
     const objFormData = Object.fromEntries(formData.entries());
 
-    const response = await fetch("http://localhost:3020/auth/login", {
-      method: "POST",
-      headers: {
-        "Content-type": "application/json",
-      },
-      body: JSON.stringify(objFormData),
-    });
-
-    const data = await response.json();
-    console.log(data);
-
-    if (data.user) {
-      setUser(data.user);
-      navigate("/home");
+    if (formData.get("email") === "") {
+      handleEmailError(true, "Email is required");
     }
 
-    if (data.error) {
-      console.log(data.error);
+    if (formData.get("password") === "") {
+      handlePasswordError(true, "Password is required");
     }
+
+    if (formData.get("email") && formData.get("password")) {
+      handleEmailError(false, "");
+      handlePasswordError(false, "");
+
+      const response = await fetch("http://localhost:3020/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-type": "application/json",
+        },
+        body: JSON.stringify(objFormData),
+      });
+  
+      const data = await response.json();
+      console.log(data);
+  
+      if (data.user) {
+        setUser(data.user);
+        navigate("/home");
+      }
+  
+      if (data.email) {
+        handleEmailError(true, data.email);
+      }
+  
+      if (data.password) {
+        handlePasswordError(true, data.password);
+      }
+    }
+
   };
 
   return (
@@ -112,6 +144,7 @@ export default function SignInSide({ setUser }: StateProps) {
               sx={{ mt: 1 }}
             >
               <TextField
+                error={errorEmail}
                 margin="normal"
                 required
                 fullWidth
@@ -120,8 +153,10 @@ export default function SignInSide({ setUser }: StateProps) {
                 name="email"
                 autoComplete="email"
                 autoFocus
+                helperText={emailErrorText}
               />
               <TextField
+                error={errorPassword}
                 margin="normal"
                 required
                 fullWidth
@@ -130,6 +165,7 @@ export default function SignInSide({ setUser }: StateProps) {
                 type="password"
                 id="password"
                 autoComplete="current-password"
+                helperText={passwordErrorText}
               />
               {/* <FormControlLabel
                 control={<Checkbox value="remember" color="primary" />}
