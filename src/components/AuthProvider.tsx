@@ -14,6 +14,7 @@ export function AuthProvider({ children }: PropsWithChildren) {
 
   const logout = () => {
     setUser(null);
+    // TODO: hit servers /logout route to logout on backend too
     navigate("/login", { replace: true });
   };
 
@@ -25,5 +26,6 @@ export function AuthProvider({ children }: PropsWithChildren) {
     }),
     [user]
   );
+  console.log(user)
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }

@@ -11,12 +11,11 @@ import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useNavigate, Link as RouterLink } from "react-router-dom";
+import { Layout } from "../components/Layout";
+import { useAuth } from "../hooks/AuthContext";
 
-type StateProps = {
-  setUser: (a: any) => void;
-};
+
 
 function Copyright(props: any) {
   return (
@@ -36,10 +35,8 @@ function Copyright(props: any) {
   );
 }
 
-// TODO remove, this demo shouldn't need to reset the theme.
-const defaultTheme = createTheme();
-
-export default function SignInSide({ setUser }: StateProps) {
+export default function SignInSide() {
+  const { login } = useAuth();
   const navigate = useNavigate();
   const [errorEmail, setErrorEmail] = useState(false);
   const [emailErrorText, setEmailErrorText] = useState("");
@@ -80,29 +77,28 @@ export default function SignInSide({ setUser }: StateProps) {
         },
         body: JSON.stringify(objFormData),
       });
-  
+
       const data = await response.json();
       console.log(data);
-  
+
       if (data.user) {
-        setUser(data.user);
+        login?.(data.user);
         navigate("/home");
       }
-  
+
       if (data.email) {
         handleEmailError(true, data.email);
       }
-  
+
       if (data.password) {
         handlePasswordError(true, data.password);
       }
     }
-
   };
 
   return (
-    <ThemeProvider theme={defaultTheme}>
-      <Grid container component="main" sx={{ height: "100vh" }}>
+    <Layout>
+      <Grid container component="main" className="h-screen">
         <CssBaseline />
         <Grid
           item
@@ -196,6 +192,6 @@ export default function SignInSide({ setUser }: StateProps) {
           </Box>
         </Grid>
       </Grid>
-    </ThemeProvider>
+    </Layout>
   );
 }
