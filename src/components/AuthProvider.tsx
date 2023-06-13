@@ -26,6 +26,5 @@ export function AuthProvider({ children }: PropsWithChildren) {
     }),
     [user]
   );
-  console.log(user)
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }

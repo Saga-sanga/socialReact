@@ -15,8 +15,6 @@ import { useNavigate, Link as RouterLink } from "react-router-dom";
 import { Layout } from "../components/Layout";
 import { useAuth } from "../hooks/AuthContext";
 
-
-
 function Copyright(props: any) {
   return (
     <Typography

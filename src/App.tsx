@@ -8,11 +8,11 @@ import NoMatch from "./pages/404";
 import { AuthProvider } from "./components/AuthProvider";
 import "./App.css";
 import { useAuth } from "./hooks/AuthContext";
+import { ProtectedRoute } from "./components/ProtectedRoute";
 
 function App() {
   // const navigate = useNavigate();
   const { user } = useAuth();
-  console.log(typeof user)
 
   // useEffect(() => {
   //   if (user) {
@@ -25,7 +25,14 @@ function App() {
   return (
     <AuthProvider>
       <Routes>
-        <Route path="/" element={<Home user={user} />}></Route>
+        <Route
+          path="/"
+          element={
+            // <ProtectedRoute>
+              <Home user={user} />
+            // </ProtectedRoute>
+          }
+        ></Route>
         <Route path="/login" element={<SignInSide />}></Route>
         <Route path="/signup" element={<SignUp />}></Route>
         <Route path="*" element={<NoMatch />}></Route>
