@@ -16,7 +16,7 @@ import MailIcon from "@mui/icons-material/Mail";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import MoreIcon from "@mui/icons-material/MoreVert";
 import { useAuth } from "../hooks/AuthContext";
-import { Avatar, Container } from "@mui/material";
+import { Avatar, Button, Container } from "@mui/material";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -110,7 +110,11 @@ export default function PrimarySearchAppBar() {
     >
       <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
       <MenuItem onClick={handleMenuClose}>My account</MenuItem>
-      <MenuItem onClick={handleLogout}>Logout</MenuItem>
+      <MenuItem onClick={handleLogout}>
+        <Button className="hover:bg-none" color="secondary" startIcon={<MailIcon/>}>
+          Logout
+        </Button>
+      </MenuItem>
     </Menu>
   );
 
