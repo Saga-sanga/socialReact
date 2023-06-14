@@ -1,12 +1,12 @@
-import { ThemeProvider, createTheme } from "@mui/material/styles";
 import { PropsWithChildren } from "react";
+import NavBar from "./NavBar";
 
-const defaultTheme = createTheme();
-
-export function Layout({children}: PropsWithChildren) {
+// TODO: Create layout
+export function Layout({ children }: PropsWithChildren) {
   return (
-    <ThemeProvider theme={defaultTheme}>
+    <>
+      <NavBar />
       {children}
-    </ThemeProvider>
-  )
+    </>
+  );
 }
