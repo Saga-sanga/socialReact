@@ -199,7 +199,7 @@ export default function PrimarySearchAppBar() {
               />
             </Search>
             <Box sx={{ flexGrow: 1 }} />
-            <Box sx={{ display: { xs: "none", md: "flex" } }}>
+            <Box sx={{ display: { xs: "none", md: "flex", alignItems: "center" } }}>
               <IconButton
                 size="large"
                 aria-label="show 4 new mails"
