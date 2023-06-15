@@ -16,8 +16,6 @@ import { useState, ChangeEvent, useEffect, MouseEvent } from "react";
 export function CreatePost() {
   const [imageFile, setImageFile] = useState<File>();
 
-  const imageObjectURL = imageFile ? URL.createObjectURL(imageFile) : undefined;
-
   useEffect(() => {
     console.log(imageFile);
   }, [imageFile]);
@@ -26,9 +24,12 @@ export function CreatePost() {
     if (event.target.files) {
       setImageFile(event.target.files[0]);
     }
+    // Prevent file input bug i.e. unable to re-select same file
+    event.target.value = "";
   };
 
   const handleClearImage = (event: MouseEvent) => {
+    event.preventDefault();
     setImageFile(undefined);
   }
 
@@ -88,7 +89,7 @@ export function CreatePost() {
           >
             <CloseIcon />
           </IconButton>
-          <CardMedia component="img" height="126" image={imageObjectURL} />
+          <CardMedia component="img" height="126" image={URL.createObjectURL(imageFile)} />
         </Box>
       ) : (
         ""
