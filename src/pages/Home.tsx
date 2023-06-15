@@ -13,7 +13,7 @@ export default function Home({ user }: UserProp) {
         <Grid container direction="column" alignItems="center" className="pt-8">
           <CreatePost/>
           {
-            posts.map((post) => <PostCard post={post}/>)
+            posts.map((post) => <PostCard key={post._id} post={post}/>)
           }
         </Grid>
       </Container>

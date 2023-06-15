@@ -17,6 +17,9 @@ import NotificationsIcon from "@mui/icons-material/Notifications";
 import MoreIcon from "@mui/icons-material/MoreVert";
 import { useAuth } from "../hooks/AuthContext";
 import { Avatar, Button, Container } from "@mui/material";
+import LogoutIcon from "@mui/icons-material/Logout";
+import AccountBoxIcon from "@mui/icons-material/AccountBox";
+import { Link } from "react-router-dom";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -108,10 +111,29 @@ export default function PrimarySearchAppBar() {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-      <MenuItem onClick={handleMenuClose}>My account</MenuItem>
+      <MenuItem onClick={handleMenuClose}>
+        <Button
+          sx={{
+            ":hover": {
+              backgroundColor: "transparent",
+            },
+          }}
+          color="secondary"
+          startIcon={<AccountBoxIcon />}
+        >
+          Profile
+        </Button>
+      </MenuItem>
       <MenuItem onClick={handleLogout}>
-        <Button className="hover:bg-none" color="secondary" startIcon={<MailIcon/>}>
+        <Button
+          sx={{
+            ":hover": {
+              backgroundColor: "transparent",
+            },
+          }}
+          color="secondary"
+          startIcon={<LogoutIcon />}
+        >
           Logout
         </Button>
       </MenuItem>
@@ -184,14 +206,16 @@ export default function PrimarySearchAppBar() {
             >
               <MenuIcon />
             </IconButton> */}
-            <Typography
-              variant="h6"
-              noWrap
-              component="div"
-              sx={{ display: { xs: "none", sm: "block" } }}
-            >
-              FacePage
-            </Typography>
+            <Link to="/">
+              <Typography
+                variant="h6"
+                noWrap
+                component="div"
+                sx={{ display: { xs: "none", sm: "block" } }}
+              >
+                FacePage
+              </Typography>
+            </Link>
             <Box sx={{ flexGrow: 1 }} />
             <Search>
               <SearchIconWrapper>
@@ -203,7 +227,9 @@ export default function PrimarySearchAppBar() {
               />
             </Search>
             <Box sx={{ flexGrow: 1 }} />
-            <Box sx={{ display: { xs: "none", md: "flex", alignItems: "center" } }}>
+            <Box
+              sx={{ display: { xs: "none", md: "flex", alignItems: "center" } }}
+            >
               <IconButton
                 size="large"
                 aria-label="show 4 new mails"
